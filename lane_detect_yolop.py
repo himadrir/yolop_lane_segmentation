@@ -70,7 +70,7 @@ class lane_detect_yolop():
         
     # function taken from https://github.com/hustvl/YOLOP/blob/main/tools/demo.py
     def show_seg_result(self, img, result): 
-        image = img.copy() 
+        image_h, image_w = img.shape[1], img.shape[0] 
 
         color_area = np.zeros((result[0].shape[0], result[0].shape[1], 3), dtype=np.uint8)
 
@@ -87,7 +87,7 @@ class lane_detect_yolop():
         img = cv2.resize(img, (640,640), interpolation=cv2.INTER_LINEAR)
         img[color_mask != 0] = img[color_mask != 0] * 0.5 + color_seg[color_mask != 0] * 0.5
         img = img.astype(np.uint8)
-        img = cv2.resize(img, (image.shape[1],image.shape[0]), interpolation=cv2.INTER_LINEAR)
+        img = cv2.resize(img, (image_h, image_w), interpolation=cv2.INTER_LINEAR)
 
         return img
     
