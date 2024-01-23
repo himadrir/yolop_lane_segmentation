@@ -43,7 +43,7 @@ class lane_detect_yolop():
         self.start_time = time.perf_counter()  # start counter
 
         features = self.preprocess(image)
-        
+    
         det_out, driveable_area_seg_out, lane_line_seg_out = self.model(features)
         _, lane_line_seg_out = torch.max(lane_line_seg_out, 1)
         _, driveable_area_seg_out = torch.max(driveable_area_seg_out, 1)
@@ -68,10 +68,10 @@ class lane_detect_yolop():
 
         return output
         
-
+    # function taken from https://github.com/hustvl/YOLOP/blob/main/tools/demo.py
     def show_seg_result(self, img, result): 
         image = img.copy() 
-        
+
         color_area = np.zeros((result[0].shape[0], result[0].shape[1], 3), dtype=np.uint8)
 
         # color_area[result[0] == 1] = [0, 255, 0]   #uncomment to display driveable area mask
@@ -96,7 +96,7 @@ class lane_detect_yolop():
 def main():
     lane_detector = lane_detect_yolop()
 
-    image_folder = "_out/rgb"
+    image_folder = "_out/rgb"  # replace with path to image dir
     image_paths = [os.path.join(image_folder, filename) for filename in os.listdir(image_folder) if filename.endswith(".png")]
 
     
@@ -106,10 +106,11 @@ def main():
         start_time = time.perf_counter()
         
         img = cv2.imread(image_path)
-        # img = cv2.imread('_out/rgb/003700.png')
+
         op = lane_detector.predict(img)
 
         end_time = time.perf_counter()
+
         elapsed_time = end_time - start_time
         fps = 1 / elapsed_time
 
